@@ -17,6 +17,6 @@ void toh(int n, const char* from, const char* to, const char* aux) {
 }
 
 int main(int argc, char const *argv[]) {
-  toh(2, "F", "T", "A");
+  toh(4, "F", "T", "A");
   return 0;
 }
