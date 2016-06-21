@@ -1,7 +1,6 @@
 #include "Stack-array.h"
 #include <iostream>
 #include <stdlib.h>
-
 using namespace std;
 
 Stack::Stack(int capacity) {
@@ -56,7 +55,7 @@ int main(int argc, char** argv) {
 	st->push(30);
 	st->push(40);
 	st->push(50);
-        cout << "isEmpty(): " << st->isEmpty() << endl;	
+        cout << "isEmpty(): " << st->isEmpty() << endl;
         cout << "isFull(): " << st->isFull() << endl;
         cout << "peek(): " << st->peek() << endl;
 	cout << "Popping all... " << endl;

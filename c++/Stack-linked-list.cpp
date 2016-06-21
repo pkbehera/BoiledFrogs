@@ -1,7 +1,6 @@
 #include "Stack-linked-list.h"
 #include <iostream>
 #include <stdlib.h>
-
 using namespace std;
 
 StackNode::StackNode(const int i) {
@@ -65,14 +64,15 @@ bool Stack::isEmpty() {
 	return top == NULL;
 }
 
-int main(int argc, char** argv) {
+int main1(int argc, char** argv) {
 	Stack st;
 	st.push(10);
 	st.push(20);
 	st.push(30);
 	st.push(40);
-	std::cout << "Peek " << st.peek() << std::endl;
-	std::cout << "Pop " << st.pop() << std::endl;
-	std::cout << "Pop " << st.pop() << std::endl;
-	std::cout << "Pop " << st.pop() << std::endl;
+	cout << "Peek " << st.peek() << endl;
+	cout << "Pop " << st.pop() << endl;
+	cout << "Pop " << st.pop() << endl;
+	cout << "Pop " << st.pop() << endl;
+	return 0;
 }
