@@ -3,12 +3,13 @@
 using namespace std;
 
 void sort (int data[], int len, bool asc) {
-  for (int i = 1; i < len; i++) {
-    for (int j = 0; j < i - 1; j++) {
-      if ((asc && data[i] < data[j]) || data[i] > data[j]) {
+  for (int i = 0; i < len - 1; i++) {
+    for (int j = 0; j < len - 1 - i; j++) {
+      bool swap = false;
+      if ((asc && data[j] > data[j + 1]) || data[j] < data[j + 1]) {
         int temp = data[j];
-        data[j] = data[i];
-        data[i] = temp;
+        data[j] = data[j + 1];
+        data[j + 1] = temp;
       }
     }
   }
