@@ -51,16 +51,17 @@
     merge(left, l, right, r, data, asc);
   }
 
+  void print(int data[], int len) {
+    for (int i = 0; i < len; i++) {
+      cout << data[i] << " ";
+    }
+    cout << endl;
+  }
+
   int main(int argc, char const *argv[]) {
     int data[] = {9, 3, 5, 4, 6, 2, 1, 10, 7, 8, 20, 34, 22, 45, 12, 44, 13, 99, 14, 87};
-    for (int i = 0; i < 20; i++) {
-      cout << data[i] << " ";
-    }
-    cout << endl;
+    print(data, 20);
     sort(data, 20, false);
-    for (int i = 0; i < 20; i++) {
-      cout << data[i] << " ";
-    }
-    cout << endl;
+    print(data, 20);
     return 0;
   }
