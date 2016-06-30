@@ -20,10 +20,11 @@ public:
   void parent(Node *p) { _parent = p; };
   void left(Node *l) { _left = l; };
   void right(Node *r) { _right = r; };
-  void append(Node* n);
+  void add(Node* n);
+  void remove(Node* n);
   void inOrder();
   //void preOrder();
-  //void postOrder();
+  void postOrder();
   int val() { return _val; };
   Node* parent() { return _parent; };
   Node* left() { return _left; };
@@ -62,45 +63,59 @@ void Node::inOrder(){
   }
 }
 
-/*void Node::postOrder() {
-  if (right() != NULL) {
-    right()->inOrder();
-  }
+/*void Node::preOrder() {
   cout << val() << " ";
   if (left() != NULL) {
-    left()->inOrder();
+    left()->preOrder();
+  }
+  if (right() != NULL) {
+    right()->preOrder();
   }
 }*/
 
-void Node::append(Node* n) {
+void Node::postOrder() {
+  if (right() != NULL) {
+    right()->postOrder();
+  }
+  cout << val() << " ";
+  if (left() != NULL) {
+    left()->postOrder();
+  }
+}
+
+void Node::add(Node* n) {
   bool goLeft = n->val() < val();
   Node *next = goLeft ? left() : right();
   if (next == NULL) {
     n->parent(this);
     goLeft ? left(n) : right(n);
   } else {
-    next->append(n);
+    next->add(n);
   }
+}
+
+void Node::remove(Node* n) {
+  //Remove is more involved
 }
 
 Node* createBST(int data[], int len) {
   Node *root = new Node(data[0]);
   for (int i = 1; i < len; i++) {
     Node* n = new Node(data[i]);
-    root->append(n);
+    root->add(n);
   }
   return root;
 }
 
-void sort(int data[], int len) {
+void sort(int data[], int len, bool asc) {
   Node* bst = createBST(data, 20);
-  bst->inOrder();
+  asc ? bst->inOrder() : bst->postOrder();
   cout << endl;
 }
 
 int main(int argc, char const *argv[]) {
   int data[] = {9, 3, 5, 4, 6, 2, 1, 10, 7, 8, 20, 34, 22, 45, 12, 44, 13, 99, 14, 87};
   print(data, 20);
-  sort(data, 20);
+  sort(data, 20, false);
   return 0;
 }
