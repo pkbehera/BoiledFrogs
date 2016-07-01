@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <assert.h>
 #include <iostream>
 using namespace std;
 
@@ -11,29 +12,39 @@ void print(int data[], int len) {
 
 class Node {
   int _val;
+  int _sz; //size of the subtree under this node
+  int _h; //Height of the subtree under this node
   Node* _parent;
   Node* _left;
   Node* _right;
+  void parent(Node *p);
+  void left(Node *l);
+  void right(Node *r);
+  void updateSize();
+  void updateHeight();
+  Node* root();
+  Node* find(int i);
 
 public:
   Node(int val);
-  void parent(Node *p) { _parent = p; };
-  void left(Node *l) { _left = l; };
-  void right(Node *r) { _right = r; };
-  void add(Node* n);
-  void remove(Node* n);
+  void insert(Node* n);
+  void remove(int n);
+  void preOrder();
   void inOrder();
-  //void preOrder();
+  void inOrderRfirst();
   void postOrder();
-  int val() { return _val; };
-  Node* parent() { return _parent; };
-  Node* left() { return _left; };
-  Node* right() { return _right; };
-  Node* root();
+  void levelOrder();
+
+  int size() { return _sz; };
+  int height() { return _h; };
+  int min();
+  int max();
 };
 
 Node::Node(int v) {
   _val = v;
+  _sz = 1;
+  _h = 1;
   _parent = NULL;
   _left = NULL;
   _right = NULL;
@@ -42,7 +53,7 @@ Node::Node(int v) {
 Node* Node::root() {
   Node* n = this;
   while (true) {
-    Node* p = n->parent();
+    Node* p = n->_parent;
     if (p == NULL) {
       return n;
     }
@@ -50,71 +61,207 @@ Node* Node::root() {
   }
 }
 
-void Node::inOrder(){
+void Node::parent(Node *p) {
+  _parent = p;
+}
+
+void Node::left(Node *l) {
+  _left = l;
+  if(l != NULL) {
+    l->parent(this);
+  }
+  updateSize();
+  updateHeight();
+}
+
+void Node::right(Node *r) {
+  _right = r;
+  if(r !=NULL) {
+    r->parent(this);
+  }
+  updateSize();
+  updateHeight();
+}
+
+void Node::updateSize() {
+  _sz = 1;
+  if (_right != NULL) {
+    _sz += _right->size();
+  }
+  if (_left != NULL) {
+    _sz += _left->size();
+  }
+  if(_parent != NULL) {
+    _parent->updateSize();
+  }
+}
+
+void Node::updateHeight() {
+  int lsz = _left == NULL ? -1 : _left->height();
+  int rsz = _right == NULL ? -1 : _right->height();
+  _h = (lsz > rsz ? lsz : rsz) + 1;
+  if(_parent != NULL) {
+    _parent->updateHeight();
+  }
+}
+
+int Node::min() {
+  Node* n = this;
+  while (true) {
+    Node* l = n->_left;
+    if (l == NULL) {
+      return n->_val;
+    }
+    n = l;
+  }
+}
+
+int Node::max() {
+  Node* n = this;
+  while (true) {
+    Node* r = n->_right;
+    if (r == NULL) {
+      return n->_val;
+    }
+    n = r;
+  }
+}
+
+void Node::preOrder() {
+  cout << _val << " ";
+  if (_left != NULL) {
+    _left->preOrder();
+  }
+  if (_right != NULL) {
+    _right->preOrder();
+  }
+}
+
+void Node::inOrder() {
   //Traverse left side first
-  if (left() != NULL) {
-    left()->inOrder();
+  if (_left != NULL) {
+    _left->inOrder();
   }
   //Then Traverse self
-  cout << val() << " ";
+  cout << _val << " ";
   //Then the right side
-  if (right() != NULL) {
-    right()->inOrder();
+  if (_right != NULL) {
+    _right->inOrder();
   }
 }
 
-/*void Node::preOrder() {
-  cout << val() << " ";
-  if (left() != NULL) {
-    left()->preOrder();
+void Node::inOrderRfirst() {
+  if (_right != NULL) {
+    _right->inOrderRfirst();
   }
-  if (right() != NULL) {
-    right()->preOrder();
+  cout << _val << " ";
+  if (_left != NULL) {
+    _left->inOrderRfirst();
   }
-}*/
+}
 
 void Node::postOrder() {
-  if (right() != NULL) {
-    right()->postOrder();
+  //Traverse left side first
+  if (_left != NULL) {
+    _left->postOrder();
   }
-  cout << val() << " ";
-  if (left() != NULL) {
-    left()->postOrder();
+  //Then the right side
+  if (_right != NULL) {
+    _right->postOrder();
   }
+  //Then Traverse self
+  cout << _val << " ";
 }
 
-void Node::add(Node* n) {
-  bool goLeft = n->val() < val();
-  Node *next = goLeft ? left() : right();
+void Node::levelOrder() {
+  //???
+}
+
+void Node::insert(Node* n) {
+  bool goLeft = n->_val < _val;
+  Node *next = goLeft ? _left : _right;
   if (next == NULL) {
-    n->parent(this);
     goLeft ? left(n) : right(n);
   } else {
-    next->add(n);
+    next->insert(n);
   }
 }
 
-void Node::remove(Node* n) {
-  //Remove is more involved
+Node* Node::find(int n) {
+    if (n == _val) {
+      return this;
+    }
+    if (n > _val) {
+      return _right->find(n);
+    }
+    if (n < _val) {
+      return _left->find(n);
+    }
+    return NULL;
+}
+
+void Node::remove(int i) {
+  Node* n = find(i);
+  if (n != NULL) {
+    Node* l = n->_left;
+    Node* r = n->_right;
+    Node* p = n->_parent;
+    if (p != NULL) {
+      if (p->_left == n) {
+          p->left(l != NULL ? l : r);
+      } else {
+          p->right(l != NULL ? l : r);
+      }
+    }
+    if (l != NULL) {
+      l->right(r);
+    }
+    n->parent(NULL);
+    n->left(NULL);
+    n->right(NULL);
+  }
 }
 
 Node* createBST(int data[], int len) {
   Node *root = new Node(data[0]);
   for (int i = 1; i < len; i++) {
     Node* n = new Node(data[i]);
-    root->add(n);
+    root->insert(n);
   }
   return root;
 }
 
 void sort(int data[], int len, bool asc) {
   Node* bst = createBST(data, 20);
-  asc ? bst->inOrder() : bst->postOrder();
+  cout << "PreOrder: ";
+  bst->preOrder();
+  cout << endl;
+  cout << "PostOrder: ";
+  bst->postOrder();
+  cout << endl;
+
+  cout << "Size: " << bst->size() << endl;
+  cout << "Height: " << bst->height() << endl;
+  cout << "Min: " << bst->min() << endl;
+  cout << "Max: " << bst->max() << endl;
+  cout << "InOrder (Sorting): ";
+  asc ? bst->inOrder() : bst->inOrderRfirst();
+  cout << endl;
+
+  bst->remove(10);
+  cout << "After removing node with valye 10: " << endl;
+  cout << "Size: " << bst->size() << endl;
+  cout << "Height: " << bst->height() << endl;
+  cout << "Min: " << bst->min() << endl;
+  cout << "Max: " << bst->max() << endl;
+  cout << "InOrder (Sorting): ";
+  asc ? bst->inOrder() : bst->inOrderRfirst();
   cout << endl;
 }
 
 int main(int argc, char const *argv[]) {
   int data[] = {9, 3, 5, 4, 6, 2, 1, 10, 7, 8, 20, 34, 22, 45, 12, 44, 13, 99, 14, 87};
+  cout << "Input: ";
   print(data, 20);
   sort(data, 20, false);
   return 0;
