@@ -9,9 +9,14 @@ void swap(int data[], int i, int j) {
 }
 
 //Notes:
+//Heap definition:
 //In an Array[a0, a1, a2, a3, ... , an]
 //A[0] is the root element of the heap
 //Left child of node n is A[2n + 1] and right child is A[2m + 2]
+
+//Heap property:
+//For max-heap key of a node is >= keys of its children
+//For min-heap key of a node is <= keys of its children
 
 //Node Number starts from 0
 void heapify(int data[], int n, int len, bool asc) {
