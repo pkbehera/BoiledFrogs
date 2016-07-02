@@ -39,7 +39,19 @@ public:
   int height() { return _h; };
   int min();
   int max();
+
+  bool isBST();
 };
+
+bool Node::isBST() {
+  if (_left != NULL && (_left->_val > _val || !_left->isBST())) {
+    return false;
+  }
+  if (_right != NULL && (_right->_val < _val || !_right->isBST())) {
+    return false;
+  }
+  return true;
+}
 
 Node::Node(int v) {
   _val = v;
@@ -240,6 +252,7 @@ void sort(int data[], int len, bool asc) {
   bst->postOrder();
   cout << endl;
 
+  cout << "IsBST: " << boolalpha << bst->isBST() << endl;
   cout << "Size: " << bst->size() << endl;
   cout << "Height: " << bst->height() << endl;
   cout << "Min: " << bst->min() << endl;
@@ -250,6 +263,7 @@ void sort(int data[], int len, bool asc) {
 
   bst->remove(10);
   cout << "After removing node with valye 10: " << endl;
+  cout << "IsBST: " << boolalpha << bst->isBST() << endl;
   cout << "Size: " << bst->size() << endl;
   cout << "Height: " << bst->height() << endl;
   cout << "Min: " << bst->min() << endl;
