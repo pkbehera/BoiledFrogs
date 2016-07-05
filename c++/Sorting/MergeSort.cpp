@@ -8,6 +8,7 @@
     int i = 0;
     int j = 0;
     int k = 0;
+    //Two finger Algorithm
     while (i < l && j < r) {
       if (asc) {
         if (left[i] < right[j]) {
@@ -23,6 +24,8 @@
         }
       }
     }
+    //Only one of these loops will be executed
+    //because eiter i == l or j == r when the control reaches here
     while (i < l) {
       data[k++] = left[i++];
     }
