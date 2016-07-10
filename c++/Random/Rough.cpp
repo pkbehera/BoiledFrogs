@@ -71,6 +71,8 @@ int main1(int argc, char const *argv[]) {
   //pointers vs references
   //function pointers
   //write a function to reverse name: first_name last_name -> last_name first_name
+
+  //Check if a binary tree is a BST or not?
   return 0;
 }
 

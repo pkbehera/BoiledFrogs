@@ -28,6 +28,25 @@ void max(int& a, const int b) {
   }
 }
 
+//Complexity: O(n), but 2 for loops
+int maxProfit1(const int* prices, const int len) {
+  int mi = 1;
+  int max = prices[mi];
+  int min = prices[0];
+  for (int i = 2; i < len; i++) {
+    if (prices[i] > max) {
+      mi = i;
+      max = prices[mi];
+    }
+  }
+  for (int i = 1; i < mi; i++) {
+    if (prices[i] < min) {
+      min = prices[i];
+    }
+  }
+  return max - min;
+}
+
 //Complexity: O(n), one for loop in backward direction
 int maxProfit(const int* prices, const int len) {
   int maxProfit = 0 - prices[len - 1];
@@ -49,6 +68,7 @@ int main(int argc, char const *argv[]) {
     cin >> data[i];
   }
   cout << "Maximum profit: " << maxProfit(data, cnt) << endl;
+  cout << "Maximum profit: " << maxProfit1(data, cnt) << endl;
   delete[] data;
   return 0;
 }
