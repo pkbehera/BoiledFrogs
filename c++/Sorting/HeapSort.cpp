@@ -22,11 +22,11 @@ void swap(int data[], int i, int j) {
 void heapify(int data[], int n, int len, bool asc) {
   int left = 2 * n + 1;
   int right = 2 * n + 2;
-  if (left < len && ((asc && data[n] < data[left]) || data[n] > data[left])) {
+  if (left < len && ((asc && data[n] < data[left]) || (!asc && data[n] > data[left]))) {
     swap(data, n, left);
     heapify(data, left, len, asc);
   }
-  if (right < len && ((asc && data[n] < data[right]) || data[n] > data[right])) {
+  if (right < len && ((asc && data[n] < data[right]) || (!asc && data[n] > data[right]))) {
     swap(data, n, right);
     heapify(data, right, len, asc);
   }
@@ -58,6 +58,8 @@ int main(int argc, char const *argv[]) {
   int data[] = {9, 3, 5, 4, 6, 2, 1, 10, 7, 8, 20, 34, 22, 45, 12, 44, 13, 99, 14, 87};
   print(data, 20);
   sort(data, 20, false);
+  print(data, 20);
+  sort(data, 20, true);
   print(data, 20);
   return 0;
 }
