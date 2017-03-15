@@ -20,15 +20,22 @@ void swap(int data[], int i, int j) {
 
 //Node Number starts from 0
 void heapify(int data[], int n, int len, bool asc) {
-  int left = 2 * n + 1;
-  int right = 2 * n + 2;
-  if (left < len && ((asc && data[n] < data[left]) || (!asc && data[n] > data[left]))) {
-    swap(data, n, left);
-    heapify(data, left, len, asc);
+  int l = 2 * n + 1;
+  int r = 2 * n + 2;
+  int s = -1; 
+  if (l < len && r < len) {
+    s = r;
+    if ((asc && data[l] < data[r]) || (!asc && data[r] < data[l])) {
+      s = l;
+    }   
+  } else if (l < len) {
+    s = l;
+  } else if (r < len) {
+    s = r;
   }
-  if (right < len && ((asc && data[n] < data[right]) || (!asc && data[n] > data[right]))) {
-    swap(data, n, right);
-    heapify(data, right, len, asc);
+  if (s != -1 && ((asc && data[n] > data[s]) || (!asc && data[n] < data[s]))) {
+    swap(data, n, s); 
+    heapify(data, s, len, asc);
   }
 }
 
