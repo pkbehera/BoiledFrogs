@@ -39,9 +39,18 @@ public:
   int height() { return _h; };
   int min();
   int max();
-
+  int predecessor();
+  int successor();
   bool isBST();
 };
+
+int Node::predecessor() {
+  return 0;
+}
+
+int Node::successor() {
+  return 0;
+}
 
 bool Node::isBST() {
   if (_left != NULL && (_left->_val > _val || !_left->isBST())) {

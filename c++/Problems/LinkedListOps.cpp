@@ -38,15 +38,17 @@ Node* createList(const int data[], const size_t len) {
 }
 
 Node* reverseList(Node* const head) {
-  Node* node = head;
   Node* prev = NULL;
-  while (node != NULL) {
-    Node* temp = node->next;
-    node->next = prev;
-    prev = node;
-    node = temp;
+  Node* curr = head;
+  Node* next = NULL;
+  while (curr != NULL) {
+    next = curr->next;
+    curr->next = prev;
+    prev = curr;
+    curr = next;
   }
-  return prev;
+  head = prev;
+  return head;
 }
 
 bool cyclic(Node* const head) {

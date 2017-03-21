@@ -39,6 +39,7 @@ void reverseWords(const char* str, char* dest) {
   append(str, dest, 0, e);
 }
 
+//Example palindromes: noon, level, rotor, civic, radar, kayak, madam
 bool palindrome(const char* str) {
   size_t len = strlen(str);
   for (size_t i = 0; i < len / 2; i++) {

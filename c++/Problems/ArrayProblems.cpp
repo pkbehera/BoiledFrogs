@@ -44,6 +44,30 @@ int dupNumber1(int data[], int len = LEN + 2) {
   return sum;
 }
 
+//Find all integer pairs in an array whose sum is equal to a given integer k
+void arrayPairs(int data[], int len, int k) {
+  //first sort the given array in ascending order
+  //use heap sort or quick sort to do in place sorting
+  if(data[0] > k) {
+    return;
+  }
+  //start values of li and ri can be refined using devide and conquor
+  int li = 0; //index from left
+  int ri = len - 1; //index from right
+  while (li < ri) {
+    int sum = data[li] + data[ri];
+    if (sum == k) {
+      cout << "(" << data[li] << ", " << data[ri] << ")" << endl;
+      li++;
+      ri--;
+    } else if (sum < k) {
+      li++;
+    } else if (sum > k) {
+      ri--;
+    }
+  }
+}
+
 int main(int argc, char const *argv[]) {
   int data[LEN];
   srand (time(NULL));
@@ -77,5 +101,7 @@ int main(int argc, char const *argv[]) {
   cout << endl;
   cout << "Duplicate: " << dupNumber(data1) << endl;
   cout << "Duplicate1: " << dupNumber1(data1) << endl;
+
+  arrayPairs(data1, 100, 30);
   return 0;
 }
